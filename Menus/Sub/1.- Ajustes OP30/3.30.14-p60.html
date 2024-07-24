@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P88 & P132</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <style>
+        /* Estilos específicos para esta página */
+        .responsive-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            margin: 20px auto;
+        }
+        .slider-container {
+            width: 80%;
+            margin: 20px auto;
+            text-align: center;
+        }
+        .slider {
+            width: 100%;
+        }
+        .bar-container {
+            width: 100%;
+            height: 30px;
+            background-color: #ddd;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .bar {
+            height: 100%;
+            background-color: green;
+            position: absolute;
+            transition: background-color 0.3s, width 0.3s, left 0.3s;
+            left: 50%; /* Inicialmente centrado */
+            transform: translateX(-50%);
+        }
+        .bar-value {
+            position: absolute;
+            font-size: 14px;
+            color: #333;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .result-text {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>P60</h1>
+    <main class="container">
+        <section class="section">
+            <img src="img/imagen_p69.jpg" alt="Imagen P60" class="responsive-image">
+        </section>
+        <section class="slider-container">
+            <div class="bar-container">
+                <div class="bar" id="colorBar" style="width: 1px;"></div> <!-- Inicialmente una línea para centrar -->
+                <div class="bar-value" id="barValue">0.000</div>
+            </div>
+            <input type="range" min="-0.2" max="0.2" step="0.001" value="0" class="slider" id="rangeSlider">
+            <button onclick="calcular()">Calcular</button>
+        </section>
+        <section class="result-text" id="resultText">
+            Aquí se mostrará el resultado.
+        </section>
+    </main>
+    <script>
+        // Actualizar el color de la barra según el valor del deslizador
+        document.getElementById('rangeSlider').addEventListener('input', function() {
+            var sliderValue = parseFloat(this.value);
+            var bar = document.getElementById('colorBar');
+            var barValue = document.getElementById('barValue');
+            barValue.textContent = sliderValue.toFixed(3);
+            
+            // Calcular el ancho de la barra y su posición
+            var barWidthPercentage = (Math.abs(sliderValue) / 0.2) * 100;
+            bar.style.width = barWidthPercentage + '%';
+
+            if (sliderValue >= 0) {
+                bar.style.left = 'calc(50% + ' + (sliderValue * 50 / 0.2) + '%)';
+            } else {
+                bar.style.left = 'calc(50% - ' + (Math.abs(sliderValue) * 50 / 0.2) + '%)';
+            }
+            
+            if (Math.abs(sliderValue) <= 0.075) {
+                bar.style.backgroundColor = 'green';
+            } else if (Math.abs(sliderValue) <= 0.1) {
+                bar.style.backgroundColor = 'yellow';
+            } else {
+                bar.style.backgroundColor = 'red';
+            }
+        });
+
+        // Función para calcular y redirigir
+        function calcular() {
+            var sliderValue = parseFloat(document.getElementById('rangeSlider').value);
+            var result = sliderValue * -1;
+            var resultText = "El resultado es: " + result.toFixed(3);
+            // Actualizar el texto del resultado
+            document.getElementById('resultText').innerText = resultText;
+            // Redirigir a la nueva página con el resultado
+            setTimeout(function() {
+                window.location.href = "4.30.14-resultadoOP30-P60.html?result=" + result.toFixed(3);
+            }, 2000); // Redirigir después de 2 segundos
+        }
+    </script>
+</body>
+</html>
