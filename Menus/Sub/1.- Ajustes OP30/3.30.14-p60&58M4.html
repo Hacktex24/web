@@ -136,7 +136,7 @@
 
         function calcular() {
             var sliderValueP58 = -1 * (33.424 - parseFloat(document.getElementById('rangeSliderP58').value));
-            var sliderValueP60 = ((sliderValueP58 * 0.2 * -1)/6.5) + ((5.317 - parseFloat(document.getElementById('rangeSliderP60').value))/6.5);
+            var sliderValueP60 = ((sliderValueP58 * 0.2 * -1)/6.5) + ((5.317 - parseFloat(document.getElementById('rangeSliderP60').value))/6);
             var resultText = "El resultado para P60 es: " + sliderValueP60.toFixed(3) + "\nEl resultado para P58 es: " + sliderValueP58.toFixed(3);
             document.getElementById('resultText').innerText = resultText;
 
