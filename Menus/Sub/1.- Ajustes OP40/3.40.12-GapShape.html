@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gap Shape</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <style>
+        /* Estilos específicos para esta página */
+        .responsive-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            margin: 20px auto;
+        }
+        .slider-container {
+            width: 80%;
+            margin: 20px auto;
+            text-align: center;
+        }
+        .slider {
+            width: 100%;
+        }
+        .bar-container {
+            width: 100%;
+            height: 30px;
+            background-color: #ddd;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .bar {
+            height: 100%;
+            background-color: green;
+            position: absolute;
+            transition: background-color 0.3s, width 0.3s, left 0.3s;
+            left: 50%; /* Inicialmente centrado */
+            transform: translateX(-50%);
+        }
+        .bar-value {
+            position: absolute;
+            font-size: 14px;
+            color: #333;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .result-text {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+        }
+        .description-box {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 5px;
+            text-align: justify;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simetria de Gap Shape</h1>
+    <main class="container">
+        <section class="section">
+            <img src="img/imagen_GS.jpg" alt="Imagen GS" class="responsive-image">
+        </section>
+        <section class="description-box">
+            <p>Introdusca los valores para cada MAP con ayuda de los deslizadores acontinuacion introdusca los ajustes como se le indica.</p>
+        </section>
+        <section class="slider-container">
+            <h2>Distancia 1</h2>
+            <div class="bar-container">
+                <div class="bar" id="colorBar1" style="width: 1px;"></div> <!-- Inicialmente una línea para centrar -->
+                <div class="bar-value" id="barValue1">0.000</div>
+            </div>
+            <input type="range" min="3.676" max="8.076" step="0.001" value="5.876" class="slider" id="rangeSlider1">
+        </section>
+        <section class="slider-container">
+            <h2>Distancia 2</h2>
+            <div class="bar-container">
+                <div class="bar" id="colorBar2" style="width: 1px;"></div> <!-- Inicialmente una línea para centrar -->
+                <div class="bar-value" id="barValue2">0.000</div>
+            </div>
+            <input type="range" min="3.676" max="8.076" step="0.001" value="5.876" class="slider" id="rangeSlider2">
+        </section>
+        <section class="slider-container">
+            <button onclick="calcularJ()">Calcular J</button>
+            <button onclick="calcularC()">Calcular C</button>
+        </section>
+        <section class="result-text" id="resultText">
+            Aquí se mostrará el resultado.
+        </section>
+    </main>
+    <script>
+        function actualizarBarra(slider, bar, barValue) {
+            var sliderValue = parseFloat(slider.value);
+            barValue.textContent = sliderValue.toFixed(3);
+            
+            // Calcular el ancho de la barra y su posición
+            var minValue = parseFloat(slider.min);
+            var maxValue = parseFloat(slider.max);
+            var range = maxValue - minValue;
+            var percentage = ((sliderValue - minValue) / range) * 100;
+            
+            // Ajustar la posición y el ancho de la barra
+            bar.style.width = percentage + '%';
+            bar.style.left = (percentage / 2) + '%';
+
+            // Aplicar los colores basados en los rangos especificados
+            if (sliderValue >= 5.077 && sliderValue <= 6.875) {
+                bar.style.backgroundColor = 'green';
+            } else if ((sliderValue >= 4.976 && sliderValue < 5.077) || (sliderValue > 6.875 && sliderValue <= 7.076)) {
+                bar.style.backgroundColor = 'yellow';
+            } else {
+                bar.style.backgroundColor = 'red';
+            }
+        }
+
+        document.getElementById('rangeSlider1').addEventListener('input', function() {
+            actualizarBarra(this, document.getElementById('colorBar1'), document.getElementById('barValue1'));
+        });
+
+        document.getElementById('rangeSlider2').addEventListener('input', function() {
+            actualizarBarra(this, document.getElementById('colorBar2'), document.getElementById('barValue2'));
+        });
+
+        function calcularJ() {
+            var sliderValue1 = parseFloat(document.getElementById('rangeSlider1').value);
+            var sliderValue2 = parseFloat(document.getElementById('rangeSlider2').value);
+            var result = (sliderValue1 - sliderValue2) * -1;
+            var resultText = "El resultado de J es: " + result.toFixed(3);
+            document.getElementById('resultText').innerText = resultText;
+
+            // Redirigir basado en el valor del resultado
+            setTimeout(function() {
+                if (Math.abs(result) < 0.05) {
+                    window.location.href = "Result/5.40.1-calculo-Altura.html?result=" + result.toFixed(3);
+                } else {
+                    window.location.href = "Result/4.40.1-resultadoOP40-Altura-J.html?result=" + result.toFixed(3);
+                }
+            }, 2000); // Redirigir después de 2 segundos
+        }
+
+        function calcularC() {
+            var sliderValue1 = parseFloat(document.getElementById('rangeSlider1').value);
+            var sliderValue2 = parseFloat(document.getElementById('rangeSlider2').value);
+            var result = (sliderValue1 - sliderValue2) * -1;
+            var resultText = "El resultado de C es: " + result.toFixed(3);
+            document.getElementById('resultText').innerText = resultText;
+
+            // Redirigir basado en el valor del resultado
+            setTimeout(function() {
+                if (Math.abs(result) < 0.05) {
+                    window.location.href = "Result/5.40.1-calculo-Altura.html?result=" + result.toFixed(3);
+                } else {
+                    window.location.href = "Result/4.40.1-resultadoOP40-Altura-C.html?result=" + result.toFixed(3);
+                }
+            }, 2000); // Redirigir después de 2 segundos
+        }
+    </script>
+</body>
+</html>
+
